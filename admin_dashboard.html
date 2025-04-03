@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; width: 400px; }
+        input, textarea { width: calc(100% - 20px); padding: 10px; margin: 10px 0; border-radius: 5px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .logout { background: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Panel</h2>
+        <label>Name:</label>
+        <input type="text" id="adminName">
+        <label>Photo URL:</label>
+        <input type="text" id="adminPhoto">
+        <label>Bio:</label>
+        <textarea id="adminBio" rows="4"></textarea>
+        <button onclick="updateData()">Save</button>
+        <a href="index.html">Go to Profile</a>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+    <script>
+        function checkAuth() {
+            if (localStorage.getItem('adminAuthenticated') !== 'true') {
+                window.location.href = 'admin.html';
+            }
+        }
+        function updateData() {
+            const name = document.getElementById('adminName').value;
+            const photo = document.getElementById('adminPhoto').value;
+            const bio = document.getElementById('adminBio').value;
+            localStorage.setItem('criminalData', JSON.stringify({ name, photo, bio }));
+            alert("Data updated successfully!");
+        }
+        function loadAdminData() {
+            const savedData = localStorage.getItem('criminalData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('adminName').value = data.name;
+                document.getElementById('adminPhoto').value = data.photo;
+                document.getElementById('adminBio').value = data.bio;
+            }
+        }
+        function logout() {
+            localStorage.removeItem('adminAuthenticated');
+            window.location.href = 'admin.html';
+        }
+        checkAuth();
+        loadAdminData();
+    </script>
+</body>
+</html>
